@@ -1,0 +1,14 @@
+.title{
+    text-align: center;
+    font-size: 50px;
+}
+
+.chart-filters {
+    display: flex;
+}
+
+.chart-filters > div {
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+}

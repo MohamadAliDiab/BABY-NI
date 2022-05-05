@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Baby NI</title>
+    <link href="https://kendo.cdn.telerik.com/2022.1.412/styles/kendo.common.min.css" rel="stylesheet" />
+
+    <link href="https://kendo.cdn.telerik.com/2022.1.412/styles/kendo.default.min.css" rel="stylesheet" />
+
+    <script src="https://kendo.cdn.telerik.com/2022.1.412/js/jquery.min.js"></script>
+
+    <link href="css/style.css" rel="stylesheet" />
+
+</head>
+<body>
+    <header>
+        <div class="title">
+            Baby NI
+        </div>
+        <div class="chart-filters">
+            <div>
+                <h4>KPI</h4>
+                <input type="radio" id="rs" name="kpi" value="MAX_RX_LEVEL" checked>
+                <label for="rs">MAX_RS_LEVEL</label><br>
+
+                <input type="radio" id="ts" name="kpi" value="MAX_TX_LEVEL">
+                <label for="ts">MAX_TS_LEVEL</label><br>  
+                
+                <input type="radio" id="rsl" name="kpi" value="RSL_DEVIATION">
+                <label for="rsl">RSL_DEVIATION</label><br><br>
+            </div>
+            <div>
+                <div>
+                    <h4>Aggregation Type</h4>
+                    <input type="radio" id="daily" name="agg_type" value="daily" checked>
+                    <label for="daily">daily</label><br>
+    
+                    <input type="radio" id="hourly" name="agg_type" value="hourly">
+                    <label for="hourly">hourly</label><br>  
+                </div>
+                <div>
+                    <h4>Date Range</h4>
+    
+                    <label for="date_from">Date From</label>
+                    <input type="date" name="date_from" id="date_from">
+                    <br/>
+                    <label for="date_to">Date To</label>
+                    <input type="date" name="date_to" id="date_to">
+                </div>
+
+                <button id="viewButton">View</button>
+            </div>
+        </div>
+    </header>
+    <div class="demo-section k-content wide">
+        <div id="chart"></div>
+    </div>
+    <div id="grid"></div>
+
+
+    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+    <script src="http://kendo.cdn.telerik.com/2022.1.412/js/kendo.all.min.js"></script>
+    <script src="js/script.js"></script>
+</body>
+</html>
