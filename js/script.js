@@ -1,7 +1,4 @@
 $(document).ready(function () {
-    let data = getDummyData();
-    createGrid(data);
-
     let checkedKPI = $('input[name="kpi"]:checked').val();
     $('input[name="kpi"]').click(() => {
         checkedKPI = $('input[name="kpi"]:checked').val();
@@ -9,12 +6,18 @@ $(document).ready(function () {
     });
 
     $("#viewButton").click(() => {
+        let tableName = $('input[name="agg_type"]:checked').val();
+        let dateFrom =  $("#date_from").val();
+        let dateTo = $("#date_to").val();
+        
+        console.log("requesting following info");
+        console.log([tableName, dateFrom, dateTo]);
 
+        let data = getDummyData(tableName, dateFrom, dateTo);
+
+        createGrid(data);
         createChart(data, checkedKPI);
     });
-
-
-    createChart(data, checkedKPI);
 });
 
 function createGrid(data) {
