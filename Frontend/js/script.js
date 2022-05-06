@@ -1,8 +1,10 @@
-$(document).ready(function () {
+$(document).ready(async function () {
     let checkedKPI = $('input[name="kpi"]:checked').val();
+    let cachedData = [];
+
     $('input[name="kpi"]').click(() => {
         checkedKPI = $('input[name="kpi"]:checked').val();
-        createChart(data, checkedKPI);
+        createChart(cachedData, checkedKPI);
     });
 
     $("#viewButton").click(() => {
@@ -13,10 +15,15 @@ $(document).ready(function () {
         console.log("requesting following info");
         console.log([tableName, dateFrom, dateTo]);
 
-        let data = getDummyData(tableName, dateFrom, dateTo);
+        fetchAggregateData(tableName, dateFrom, dateTo).then((data => {
+            console.log(data);
 
-        createGrid(data);
-        createChart(data, checkedKPI);
+            createGrid(data);
+            createChart(data, checkedKPI);
+
+            cachedData = data;
+        }))
+        
     });
 });
 
@@ -101,18 +108,8 @@ function createChart(data, checkedKPI) {
 
 // $(document).bind("kendo:skinChange", createChart);
 
-function getDummyData(tableName, dateFrom, dateTo){           
-    var data = [
-      {DateTime_key: "2017/6/12 15/00/00", Link: "16/1" , Slot: 20 , NeType: "AMM6PC" , NeAlias: 17, "MAX_RX_LEVEL": 0,"MAX_TX_LEVEL": -5,"RSL_DEVIATION": 20},
-      {DateTime_key: "2018/6/12 15/00/00", Link: "16/1" , Slot: 20 , NeType: "AMM6PC" , NeAlias: 17, "MAX_RX_LEVEL": 10,"MAX_TX_LEVEL": -5,"RSL_DEVIATION": 20},
-      {DateTime_key: "2010/6/12 15/00/00", Link: "16/1" , Slot: 20 , NeType: "AMM6PC", NeAlias: 17, "MAX_RX_LEVEL": 20,"MAX_TX_LEVEL": -5,"RSL_DEVIATION": 20},
-      {DateTime_key: "2019/6/12 15/00/00", Link: "16/1" , Slot: 20 , NeType: "AMM6PC", NeAlias: 17, "MAX_RX_LEVEL": 30,"MAX_TX_LEVEL": -5,"RSL_DEVIATION": 20},
-      {DateTime_key: "2016/6/12 15/00/00", Link: "16/1" , Slot: 20 , NeType: "AMM6PC", NeAlias: 17, "MAX_RX_LEVEL": 40,"MAX_TX_LEVEL": -5,"RSL_DEVIATION": 20},
-      {DateTime_key: "2017/6/12 15/00/00", Link: "16/1" , Slot: 20 , NeType: "AMM6PC", NeAlias: 17, "MAX_RX_LEVEL": -40,"MAX_TX_LEVEL": -5,"RSL_DEVIATION": 20},
-      {DateTime_key: "2017/6/12 15/00/00", Link: "16/1" , Slot: 20 , NeType: "AMM6PC", NeAlias: 17, "MAX_RX_LEVEL": 50,"MAX_TX_LEVEL": -5,"RSL_DEVIATION": 20},
-      {DateTime_key: "2017/6/12 15/00/00", Link: "16/1" , Slot: 20 , NeType: "AMM6PC", NeAlias: 17, "MAX_RX_LEVEL": 60,"MAX_TX_LEVEL": -5,"RSL_DEVIATION": 20},
-      {DateTime_key: "2017/6/12 15/00/00", Link: "16/1" , Slot: 20 , NeType: "AMM6PC", NeAlias: 17, "MAX_RX_LEVEL": 80,"MAX_TX_LEVEL": -5,"RSL_DEVIATION": 20},
-      
-    ];
-    return data;
+async function fetchAggregateData(tableName, dateFrom, dateTo){           
+    tableName = "aggregate_" + tableName;
+
+    return fetch("https://localhost:44393/api/GetDataByDate/get-data-by-date/"+tableName+"/ "+dateFrom+"/ " + dateTo).then (response => {return response.json()});
  }
