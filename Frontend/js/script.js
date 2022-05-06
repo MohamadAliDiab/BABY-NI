@@ -2,9 +2,19 @@ $(document).ready(async function () {
     let checkedKPI = $('input[name="kpi"]:checked').val();
     let cachedData = [];
 
+    $("#aliasSelector").hide();
+
     $('input[name="kpi"]').click(() => {
         checkedKPI = $('input[name="kpi"]:checked').val();
         createChart(cachedData, checkedKPI);
+    });
+
+    $("#aliasSelector").change(() => {
+        let neAlias = $("#aliasSelector option:selected" ).text();
+        let filteredData = cachedData.filter((obj) => {
+            return obj.NeAlias == neAlias;
+        });
+        createChart(filteredData, checkedKPI);
     });
 
     $("#viewButton").click(() => {
@@ -20,6 +30,22 @@ $(document).ready(async function () {
 
             createGrid(data);
             createChart(data, checkedKPI);
+
+            let aliases = data.map((obj) => {
+                return obj.NeAlias;
+            });
+            
+            console.log("aliases");
+            console.log(aliases);
+            aliases = aliases.filter(onlyUnique);
+            console.log(aliases);
+
+            let options = "";
+            aliases.forEach((alias) => {
+                options += '<option value="'+alias+'">'+alias+'</option>'
+            })
+            $("#aliasSelector").html(options);
+            $("#aliasSelector").show();
 
             cachedData = data;
         }))
@@ -113,3 +139,7 @@ async function fetchAggregateData(tableName, dateFrom, dateTo){
 
     return fetch("https://localhost:44393/api/GetDataByDate/get-data-by-date/"+tableName+"/ "+dateFrom+"/ " + dateTo).then (response => {return response.json()});
  }
+
+ function onlyUnique(value, index, self) {
+    return self.indexOf(value) === index;
+  }
